@@ -1,11 +1,16 @@
-"use strict";
+import styles from "./styles/main.scss";
+
+//TODO: abstract out the whole thing as a container object
 
 var count = 0;
+var items = [];
+var handles = [];
 var addBtn = document.getElementById("add");
 var removeBtn = document.getElementById("remove");
 var container = document.getElementById("container");
-var items = [];
-var handles = [];
+
+window.onmouseup = onMouseUp;
+window.onmouseleave = onMouseUp;
 
 function getRandColor() {
 	var rgb = [0, 0, 0].map( () => Math.ceil(Math.random() * 255) );
@@ -55,11 +60,23 @@ addBtn.onclick = () => {
 removeBtn.onclick = removeFlexItem;
 
 var clicked = false;
-var handleIndex, contextSize, nextItem, precedingItem, totalGrow;
+var handleIndex, 
+	totalGrow,
+	areaStart,
+	areaEnd,
+	nextItem, 
+	precedingItem, 
+	contextSize; 
 
 function getFlexGrow(item) {
 	return parseFloat(item.style.flexGrow);
 }
+
+function setSizingArea() {
+	areaStart = precedingItem.offsetLeft;
+	areaEnd = areaStart + nextItem.offsetLeft + nextItem.offsetWidth;
+}
+
 /* Given a target sizing handle index, set: 
  * contextSize: sum of the sizes of the two flex items surrounding the handle
  * nextItem: reference to flex item element directly after the handle
@@ -75,11 +92,11 @@ function initSizingContext(index) {
 }
 
 // Attach event handlers only to flex items within the sizing context
-function setEventHandlers(index) {
-	for(let i = 0; i < items.length; i++) {
-		let inContext = (i == index || i == index - 1);
-		items[i].onmousemove = inContext ? onMouseMove : null;
-	}
+function setEventHandlers() {
+	items.forEach( item => {
+		var target = (item == precedingItem || item == nextItem);
+		item.onmousemove = target ? onMouseMove : null;
+	});
 }
 
 function onHandleClick(e) {
@@ -87,6 +104,7 @@ function onHandleClick(e) {
 	clicked = true;
 	handleIndex = e.target.index;
 	initSizingContext(handleIndex);
+	setSizingArea();
 	setEventHandlers(handleIndex);
 }
 
@@ -97,17 +115,25 @@ function onMouseUp(e) {
 	}
 }
 
+function getMousePosition(e) {
+	var pos = e.clientX - areaStart;
+	if (pos < 0) { 
+		pos = 0 
+	} else if (pos > areaEnd) {
+		pos = areaEnd;
+	}
+	return pos;
+}
+
 function onMouseMove(e) {
 	e.preventDefault();
 	if (clicked && count > 1) {
-		var currentPos = (e.target == precedingItem) ?
-			e.offsetX : e.offsetX + e.target.offsetLeft;
-		currentPos += e.target.parentElement.offsetLeft// + handles.length * 5;
+		var currentPos = getMousePosition(e);
 		var precedingItemGrow = totalGrow * currentPos / contextSize;
 		var nextItemGrow = totalGrow - precedingItemGrow;
 		nextItem.style.flexGrow = nextItemGrow;
 		precedingItem.style.flexGrow = precedingItemGrow;
-		logItemsGrow();
+		//logItemsGrow();
 	}
 }
 
@@ -130,7 +156,4 @@ function getContextGrow(index) {
 	return res > 0 ? res : 0;
 } 
 
-// document.onmousemove = onMouseMove;
-window.onmouseup = onMouseUp;
-window.onmouseleave = onMouseUp;
 
