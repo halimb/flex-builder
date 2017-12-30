@@ -1,7 +1,7 @@
 .container {
 	display: flex;
 	flex-flow: row wrap;
-	border: 4px solid black;
+	/*border: 4px solid black;*/
 	/*height: 500px;*/
 	justify-content: space-around;
 	align-items: stretch;
@@ -24,6 +24,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
+	flex: 1 0 auto;
 	font-family: arial;
 }
 
@@ -34,7 +35,7 @@
 	flex: 0 1 5px;
 }
 
-.handle:hover, :focus{
+.handle:hover {
 	background-color: #fff;
 }
 
