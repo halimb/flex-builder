@@ -1,4 +1,5 @@
 import { default as DOM } from "./DOMHelpers";
+import AppState from "./AppState";
 
 export default class HoverBar {
 
@@ -21,55 +22,59 @@ export default class HoverBar {
 		container.addEventListener("mouseenter", e => this.enable());
 		container.addEventListener("mousedown", e => this.disable(true));
 		container.addEventListener("mouseup", e => this.enable(true));
+		AppState.subscribe("horizontal", value => this.updateOrientation(value));
 	}
 
 	onMouseMove(e) {
-		if(this.visible) {
-			let target = e.target;
-			if(target.id == this.ID) {
-				target = e.path[1];
-			}
-			let mousePos = this.getMousePos(e);
-			let horizontal = this.isHorizontal();
-			this.updateBar( mousePos, target, horizontal);
+		this.updateTarget(e);
+		this.updatePosition(e);
+		this.renderBar();
+	}
+
+	updateTarget(e) {
+		let target = e.target;
+		if(target.id == this.ID) {
+			target = e.path[1];
+		}
+		this.target = target; 
+	}
+
+	updatePosition(e) {
+		this.x = e.pageX - this.thickness / 2;
+		this.y = e.pageY;
+	}
+
+	renderBar() {
+		if (this.visible) {
+			let containerTop = DOM.getOffsetTop(this.container);
+			let containerLeft = DOM.getOffsetLeft(this.container);
+			let targetLeft = DOM.getOffsetLeft(this.target) - containerLeft;
+			let targetTop = DOM.getOffsetTop(this.target) - containerTop;
+			let hoverX = this.x - containerLeft;
+			let hoverY = this.y - containerTop;
+
+			let [width, height] = this.horizontal ? 
+					[this.target.offsetWidth, this.thickness] :
+					[this.thickness, this.target.offsetHeight];
+			
+			let [left, top] = this.horizontal ?
+					[targetLeft, hoverY] :
+					[hoverX, targetTop];
+
+			let styles = { top, left, width, height };
+
+			DOM.style(this.bar, styles);
 		}
 	}
 
-	isHorizontal() {	
-		return false;
-	}
-
-	getMousePos(e) {
-		return {
-			x: e.pageX,
-			y: e.pageY
-		}
-	}
-
-	updateBar(mousePos, target, horizontal) {
-		let containerTop = 0;//DOM.getOffsetPos(this.container, true);
-		let containerLeft = DOM.getOffsetPos(this.container, false);
-		let hoverX = mousePos.x - containerLeft;
-		let hoverY = mousePos.y - containerTop;
-
-		let [width, height] = horizontal ? 
-				[target.offsetWidth, this.thickness] :
-				[this.thickness, target.offsetHeight];
-		
-		let [left, top] = horizontal ?
-				[containerLeft, hoverY] :
-				[hoverX, containerTop];
-
-		let styles = { top, left, width, height };
-
-		DOM.style(this.bar, styles);
+	updateOrientation(value) {
+		this.horizontal = value;
+		this.renderBar();
 	}
 
 	enable(mouseup) {
 		if (mouseup) { this.clicked = false };
-		if (this.clicked) {
-			return;
-		}
+		if (this.clicked) { return };
 		this.visible = true;
 		DOM.style(this.bar, {opacity: "1"});
 	}
