@@ -1,7 +1,7 @@
 $main: #2196F3;
 $btn-color: #555;
 $flex-item-bg: #fff;
-$handle-thickness: 5px;
+$handle-thickness: 10px;
 $hoverbar-bg: rgba(0, 255, 0, .2);  
 
 * {
@@ -48,11 +48,13 @@ body {
 	height: 100%;
 }
 
-.v {
+.item--row {
+	display: flex;
 	flex-flow: row;
 }
 
-.h {
+.item--column {
+	display: flex;
 	flex-flow: column;
 }
 
@@ -62,6 +64,7 @@ body {
 	cursor: crosshair;
 	align-items: center;
 	justify-content: space-around;
+	// border: 1px solid black;
 	flex: 1 0 1%;
 	font-family: arial;
 }
