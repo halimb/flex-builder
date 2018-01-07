@@ -10,14 +10,22 @@ export default class DOMHelpers {
 	}
 
 	// Traverse the parents of an element and add up their offsets
-	static getOffsetPos(item, horizontal) {
+	static getOffsetPos(item, top) {
 		let parent = item.offsetParent;
-		let offset = horizontal ? "offsetTop" : "offsetLeft";
+		let offset = top ? "offsetTop" : "offsetLeft";
 		if ( parent && parent != document.body) {
-			return this.getOffsetPos(parent, horizontal) + item[offset];
+			return this.getOffsetPos(parent, top) + item[offset];
 		} else {
 			return item[offset];
 		}
+	}
+
+	static getOffsetTop(item) {
+		return DOMHelpers.getOffsetPos(item, true);
+	}
+
+	static getOffsetLeft(item) {
+		return DOMHelpers.getOffsetPos(item, false);
 	}
 
 	static logItemsGrow(items) {
