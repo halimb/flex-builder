@@ -8,7 +8,7 @@ export default class SizingContainer {
 		this.items = [];
 		this.handles = [];
 		this.container = container;
-		SizingContainer.horizontal = horizontal;
+		this.horizontal = horizontal;
 		this.initContainer();
 	}
 
@@ -40,7 +40,7 @@ export default class SizingContainer {
 		let handle = new Handle({ 
 			clickEvent: clickEvent,
 			prepend: this.prepend,
-			horizontal: SizingContainer.horizontal
+			horizontal: this.horizontal
 		});
 		this.handles.push(handle);
 	}
@@ -51,8 +51,8 @@ export default class SizingContainer {
 
 	onClick(e) {
 		let target = e.target;
-		let targetSize = DOM.getSize(target, SizingContainer.horizontal);
-		let position = SizingContainer.horizontal ? e.offsetY : e.offsetX;
+		let targetSize = DOM.getSize(target, this.horizontal);
+		let position = this.horizontal ? e.offsetY : e.offsetX;
 		this.prepend = (position < targetSize / 2);
 		this.insertFlexItem(e);
 		this.attachHandle(e);
@@ -65,5 +65,4 @@ export default class SizingContainer {
 }
 
 SizingContainer.ID = 0;
-SizingContainer.horizontal = false;
 
