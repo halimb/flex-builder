@@ -1,4 +1,5 @@
 import { default as DOM } from "./DOMHelpers";
+import Action from "./Action";
 import AppState from "./AppState";
 
 export default class HoverBar {
@@ -8,11 +9,12 @@ export default class HoverBar {
 		this.container = container;
 		this.visible = true;
 		this.clicked = false;
-		this.bar = DOM.createNode({
+		this.bar = Action.createNode({
 			id: "hoverbar",
 			cssClass: "hoverbar"
-		});
+		}, true);
 		this.attachBar(container);
+		AppState.subscribe("busy", b => this.onAppBusy(b) )
 	}
 
 	attachBar(container) {
@@ -20,8 +22,8 @@ export default class HoverBar {
 		container.addEventListener("mousemove", e => this.onMouseMove(e));
 		container.addEventListener("mouseleave", e => this.disable());
 		container.addEventListener("mouseenter", e => this.enable());
-		container.addEventListener("mousedown", e => this.disable(true));
-		container.addEventListener("mouseup", e => this.enable(true));
+		// container.addEventListener("mousedown", e => this.disable(true));
+		// container.addEventListener("mouseup", e => this.enable(true));
 		AppState.subscribe("horizontal", value => this.updateOrientation(value));
 	}
 
@@ -63,7 +65,7 @@ export default class HoverBar {
 
 			let styles = { top, left, width, height };
 
-			DOM.style(this.bar, styles);
+			 Action.style(this.bar, styles, true);
 		}
 	}
 
@@ -72,17 +74,19 @@ export default class HoverBar {
 		this.renderBar();
 	}
 
-	enable(mouseup) {
-		if (mouseup) { this.clicked = false };
-		if (this.clicked) { return };
+	enable() {
 		this.visible = true;
-		DOM.style(this.bar, {opacity: "1"});
+		 Action.style(this.bar, {opacity: "1"}, true);
 	}
 
-	disable(mousedown) {
+	disable() {
 		this.visible = false;
-		DOM.style(this.bar, {opacity: "0"});
-		if (mousedown) { this.clicked = true };
+		 Action.style(this.bar, {opacity: "0"}, true);
+	}
+
+	onAppBusy(appBusy) {
+		if (appBusy) { this.disable() }
+		else { this.enable() } 
 	}
 
 }

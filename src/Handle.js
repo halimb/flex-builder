@@ -1,50 +1,59 @@
 import { default as DOM } from  "./DOMHelpers";
+import Action from "./Action";
+import AppHistory from "./AppHistory";
+import AppState from "./AppState";
 import HoverBar from "./HoverBar";
+
 export default class Handle {
 
-	constructor( { clickEvent, prepend, horizontal } ) {
-		this.clicked = false;
+	constructor( { target, initialPos = {x: NaN, y: NaN}, prepend, horizontal } ) {
 		this.horizontal = horizontal;
-		this.node = Handle.createNode();
-		this.initHandle(clickEvent, prepend);
-		this.resize(clickEvent);
+		this.node = Handle.createNode(horizontal);
+		this.initHandle(target, prepend);
+		let position = this.processPosition({
+			x: initialPos.x, 
+			y: initialPos.y
+		});
+		console.log(initialPos);
+		console.log(position);
+		this.resizeTo(position);
+		this.clicked = false;
 	}
 
-	initHandle(clickEvent, prepend) {
-		let target = clickEvent.target;
-		DOM.insertNextTo(this.node, target, prepend);
+	initHandle(target, prepend) {
+		Action.insertNextTo(this.node, target, prepend);
 		this.updateSiblings();
 		this.updateSizingArea();
 		this.listen(this.node);
 	}
 
-	updateSiblings() {
+	updateSiblings(e) {
 		this.nextItem = this.node.nextSibling;
 		this.prevItem = this.node.previousSibling;
 	}
 
-	resize(e) {
-		var position = this.getMousePosition(e);
+	resizeTo(position) {
 		this.updateGrows(position);
 	}
 
-	getMousePosition(e) {
-		var pagePos = this.horizontal ?
-			e.pageY : e.pageX;
+	processPosition({x, y}) {
+		var pagePos = this.horizontal ? y : x;
 		let start = this.contextStart;
 		let end = this.contextEnd;
 		var pos = pagePos - start;
+		console.log(`contextStart = ${start}, contextEnd = ${end}, pos = ${pos}`);
 		if (pos > end) { pos = end }
 		else if (pos < 0) { pos = 0 }
 		return pos;
 	}
 
 	updateSizingArea() {
-		let nextWidth = this.nextItem.offsetWidth
+		let nextSize = DOM.getSize(this.nextItem, this.horizontal);
 		let prevOffset = DOM.getOffsetPos(this.prevItem, this.horizontal);
 		let nextOffset = DOM.getOffsetPos(this.nextItem, this.horizontal);
 		this.contextStart = prevOffset;
-		this.contextEnd = nextOffset + nextWidth - prevOffset;
+		this.contextEnd = nextOffset + nextSize - prevOffset;
+		console.log(`nextOffset = ${nextOffset}, nextSize = ${nextSize}, prevOffset = ${prevOffset}`);
 	}
 
 	updateGrows(pos) {
@@ -75,7 +84,8 @@ export default class Handle {
 	}
 
 	onMouseDown(e) {
-		e.preventDefault();
+		e.stopPropagation();
+		AppState.set("busy", true);
 		this.updateSiblings();
 		this.updateSizingArea();
 		this.clicked = true;
@@ -83,20 +93,28 @@ export default class Handle {
 
 	onMouseUp(e) {
 		// e.preventDefault();
-		this.clicked = false;
+		if (this.clicked) {
+			AppState.set("busy", false)
+			AppHistory.addCheckpoint();
+			this.clicked = false;
+		}
 	}
 
 	onMouseMove(e) {
 		if (this.clicked) {
-			e.preventDefault();
-			this.resize(e);
+			e.stopPropagation();
+			let position = this.processPosition({
+				x: e.pageX,
+				y: e.pageY
+			})
+			this.resizeTo(position);
 		}
 	}
 
-	static createNode() {
+	static createNode(horizontal) {
 		let id = `handle${++Handle.ID}`
-		let node = DOM.createNode({id, cssClass: "handle"});
-		DOM.style(node, {cursor: "col-resize"});
+		let cssClass = horizontal ? "handle--h" : "handle--v";
+		let node = Action.createNode({id, cssClass});
 		return node;
 	}
 
