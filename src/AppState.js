@@ -2,6 +2,7 @@ export default class AppState {
 
 	constructor() {
 		AppState.horizontal = { value: false, callbacks: [] };
+		AppState.busy = { value: false, callbacks: [] }
 	}
 
 	static subscribe(state, onStateChange) {
@@ -13,6 +14,10 @@ export default class AppState {
 		AppState.dispatch(state);
 	}
 
+	static get(state) {
+		return AppState[state].value;
+	}
+
 	static dispatch(changedState) {
 		let stateValue = AppState[changedState].value; 
 		let callbacks = AppState[changedState].callbacks;
@@ -20,4 +25,5 @@ export default class AppState {
 	}
 }
 
+AppState.busy;
 AppState.horizontal;
