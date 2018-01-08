@@ -1,12 +1,14 @@
 $main: #2196F3;
-$btn-color: #555;
+$primary: #555;
+$primary-active: #bd5;
 $flex-item-bg: #fff;
-$handle-thickness: 10px;
+$handle-thickness: 5px;
 $hoverbar-bg: rgba(0, 255, 0, .2);  
 
 * {
-	border-radius: 4px;
+	// border-radius: 4px;
 	// transition: .1s ease;
+	user-select: none;
 }
 
 button {
@@ -17,13 +19,13 @@ button {
 	border: none;
 	font-family: arial;
 	font-size: 180% !important;
-	color: $btn-color; 
+	color: $primary; 
 	box-shadow: 2px 2px 2px 1px rgba(0,0,0,.5);
 	outline: none !important;
 }
 
 button:hover {
-	background: #bd5;
+	background: $primary-active;
 }
 
 body {
@@ -69,12 +71,21 @@ body {
 	font-family: arial;
 }
 
-.handle {
-	// background: white;
-	// border-right: 2px solid $main;
+.handle--h {
+	background: $main;
+	// border-top: $handle-thickness * .4 solid $flex-item-bg;
+	// border-bottom: $handle-thickness * .4 solid $flex-item-bg;
 	flex: 0 1 $handle-thickness;
+	cursor: row-resize
 }
 
+.handle--v {
+	background: $main; 
+	// border-right: $handle-thickness * .4 solid $flex-item-bg;
+	// border-left: $handle-thickness * .4 solid $flex-item-bg;
+	flex: 0 1 $handle-thickness;
+	cursor: col-resize;
+}
 
 .hoverbar {
 	position: absolute;
