@@ -22,7 +22,6 @@ export default class Handle {
 		this.updateSiblings();
 		this.updateSizingArea();
 		this.listen(this.node);
-		// App.saveState();
 	}
 
 	updateSiblings(e) {
@@ -74,27 +73,26 @@ export default class Handle {
 	}
 
 	listen(handle) {
-		handle.addEventListener("mousedown", e => this.onMouseDown(e));
-		document.addEventListener("mousemove", e => this.onMouseMove(e));
-		document.addEventListener("mouseup", e => this.onMouseUp(e));
+		App.registerEventListener(handle , "mousedown", e => this.onMouseDown(e));
+		App.registerEventListener(document, "mousemove", e => this.onMouseMove(e));
+		App.registerEventListener(document, "mouseup", e => this.onMouseUp(e));
 	}
 
 	onMouseDown(e) {
 		e.stopPropagation();
-		this.registerStyle();
-		// App.saveState();
-		App.set("busy", true);
+		console.log("hey! :)")
+		App.setValue("busy", true);
 		this.updateSiblings();
 		this.updateSizingArea();
 		this.clicked = true;
+		App.saveState();
 	}
 
 	onMouseUp(e) {
-		// e.preventDefault();
-		// if (this.clicked) {
-			App.set("busy", false);
+		if(this.clicked) {
+			App.setValue("busy", false);
 			this.clicked = false;
-		// }
+		}
 	}
 
 	onMouseMove(e) {
@@ -108,22 +106,11 @@ export default class Handle {
 		}
 	}
 
-	registerStyle() {
-		let nextItemGrow = this.nextItem.style.flex;
-		let prevItemGrow = this.prevItem.style.flex;
-		let styleNext = { "flex": nextItemGrow };
-		let stylePrev = { "flex": prevItemGrow };
-		DOM.style(this.nextItem, styleNext);
-		DOM.style(this.prevItem, stylePrev);
-	}
-
 	static createNode(horizontal) {
-		let id = `handle${++Handle.ID}`
+		let id = App.createId('handle');
 		let cssClass = horizontal ? "handle--h" : "handle--v";
 		let node = DOM.createNode({id, cssClass});
 		return node;
 	}
 
 }
-
-Handle.ID = 0;
