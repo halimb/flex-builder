@@ -1,3 +1,30 @@
+// Fonts
+@font-face {
+	src: url("fonts/Nunito-Light.ttf");
+	font-family: "Nunito-Light";
+}
+
+@font-face {
+	src: url("fonts/Nunito-Regular.ttf");
+	font-family: "Nunito-Regular";
+}
+
+@font-face {
+	src: url("fonts/Nunito-SemiBold.ttf");
+	font-family: "Nunito-SemiBold";
+}
+
+@font-face {
+	src: url("fonts/Nunito-Bold.ttf");
+	font-family: "Nunito-Bold";
+}
+
+@font-face {
+	src: url("fonts/Nunito-ExtraBold.ttf");
+	font-family: "Nunito-ExtraBold";
+}
+
+// Variables
 $main: #2196F3;
 $primary: #555;
 $primary-active: #bd5;
@@ -7,7 +34,6 @@ $hoverbar-bg: rgba(0, 255, 0, .2);
 
 * {
 	// border-radius: 4px;
-	// transition: .1s ease;
 	user-select: none;
 }
 
@@ -17,9 +43,9 @@ button {
 	height: 50px !important;
 	margin: auto;
 	border: none;
-	font-family: arial;
+	background: white;
 	font-size: 180% !important;
-	color: $primary; 
+	color: #444;//$primary; 
 	box-shadow: 2px 2px 2px 1px rgba(0,0,0,.5);
 	outline: none !important;
 }
@@ -34,10 +60,12 @@ body {
 
 .main {
 	height: 90vh;
-	width: 80vw;
+	width: 70vw;
 	position: absolute;
-	top: 5vh;
-	left: 10vw;
+	top: 0; right: 0;
+	box-shadow: 0 0 20px 3px rgba(0,0,30,.6);
+	left: 0; bottom: 0;
+	margin: auto;
 }
 
 .container {
@@ -68,11 +96,13 @@ body {
 	justify-content: space-around;
 	// border: 1px solid black;
 	flex: 1 0 1%;
-	font-family: arial;
+	// transition: .1s ease;
+	font-family: Nunito-SemiBold;
 }
 
 .handle--h {
 	background: $main;
+	background: #9bF;
 	// border-top: $handle-thickness * .4 solid $flex-item-bg;
 	// border-bottom: $handle-thickness * .4 solid $flex-item-bg;
 	flex: 0 1 $handle-thickness;
@@ -81,6 +111,7 @@ body {
 
 .handle--v {
 	background: $main; 
+	background: #9bF;
 	// border-right: $handle-thickness * .4 solid $flex-item-bg;
 	// border-left: $handle-thickness * .4 solid $flex-item-bg;
 	flex: 0 1 $handle-thickness;
@@ -96,9 +127,10 @@ body {
 	visibility: hidden;
 }
 
-.btn-box {
+.controls {
+	display: flex;
 	position: fixed;
-	bottom: 20px;
+	left: 20px;
 }
 
 button {
