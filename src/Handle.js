@@ -1,7 +1,6 @@
 import { default as DOM } from  "./DOMHelpers";
 import Action from "./Action";
-import AppHistory from "./AppHistory";
-import AppState from "./AppState";
+import App from "./App";
 import HoverBar from "./HoverBar";
 
 export default class Handle {
@@ -14,8 +13,6 @@ export default class Handle {
 			x: initialPos.x, 
 			y: initialPos.y
 		});
-		console.log(initialPos);
-		console.log(position);
 		this.resizeTo(position);
 		this.clicked = false;
 	}
@@ -25,6 +22,7 @@ export default class Handle {
 		this.updateSiblings();
 		this.updateSizingArea();
 		this.listen(this.node);
+		// App.saveState();
 	}
 
 	updateSiblings(e) {
@@ -41,7 +39,6 @@ export default class Handle {
 		let start = this.contextStart;
 		let end = this.contextEnd;
 		var pos = pagePos - start;
-		console.log(`contextStart = ${start}, contextEnd = ${end}, pos = ${pos}`);
 		if (pos > end) { pos = end }
 		else if (pos < 0) { pos = 0 }
 		return pos;
@@ -53,7 +50,6 @@ export default class Handle {
 		let nextOffset = DOM.getOffsetPos(this.nextItem, this.horizontal);
 		this.contextStart = prevOffset;
 		this.contextEnd = nextOffset + nextSize - prevOffset;
-		console.log(`nextOffset = ${nextOffset}, nextSize = ${nextSize}, prevOffset = ${prevOffset}`);
 	}
 
 	updateGrows(pos) {
@@ -61,8 +57,8 @@ export default class Handle {
 		let totalSize = this.getTotalSize();
 		var prevItemGrow = parseFloat(totalGrow * pos / totalSize).toFixed(3);
 		var nextItemGrow = totalGrow - prevItemGrow;
-		this.nextItem.style.flex = nextItemGrow;
-		this.prevItem.style.flex = prevItemGrow;
+		DOM.style(this.nextItem, { flex: nextItemGrow });
+		DOM.style(this.prevItem, { flex: prevItemGrow });
 	}
 	
 	getTotalSize() {
@@ -85,7 +81,9 @@ export default class Handle {
 
 	onMouseDown(e) {
 		e.stopPropagation();
-		AppState.set("busy", true);
+		this.registerStyle();
+		// App.saveState();
+		App.set("busy", true);
 		this.updateSiblings();
 		this.updateSizingArea();
 		this.clicked = true;
@@ -93,11 +91,10 @@ export default class Handle {
 
 	onMouseUp(e) {
 		// e.preventDefault();
-		if (this.clicked) {
-			AppState.set("busy", false)
-			AppHistory.addCheckpoint();
+		// if (this.clicked) {
+			App.set("busy", false);
 			this.clicked = false;
-		}
+		// }
 	}
 
 	onMouseMove(e) {
@@ -109,6 +106,15 @@ export default class Handle {
 			})
 			this.resizeTo(position);
 		}
+	}
+
+	registerStyle() {
+		let nextItemGrow = this.nextItem.style.flex;
+		let prevItemGrow = this.prevItem.style.flex;
+		let styleNext = { "flex": nextItemGrow };
+		let stylePrev = { "flex": prevItemGrow };
+		Action.style(this.nextItem, styleNext);
+		Action.style(this.prevItem, stylePrev);
 	}
 
 	static createNode(horizontal) {

@@ -1,6 +1,5 @@
 import { default as DOM } from "./DOMHelpers";
-import Action from "./Action";
-import AppState from "./AppState";
+import App from "./App";
 
 export default class HoverBar {
 
@@ -9,12 +8,11 @@ export default class HoverBar {
 		this.container = container;
 		this.visible = true;
 		this.clicked = false;
-		this.bar = Action.createNode({
+		this.bar = DOM.createNode({
 			id: "hoverbar",
 			cssClass: "hoverbar"
-		}, true);
+		});
 		this.attachBar(container);
-		AppState.subscribe("busy", b => this.onAppBusy(b) )
 	}
 
 	attachBar(container) {
@@ -24,7 +22,8 @@ export default class HoverBar {
 		container.addEventListener("mouseenter", e => this.enable());
 		// container.addEventListener("mousedown", e => this.disable(true));
 		// container.addEventListener("mouseup", e => this.enable(true));
-		AppState.subscribe("horizontal", value => this.updateOrientation(value));
+		App.subscribe("busy", b => this.onAppBusy(b) )
+		App.subscribe("horizontal", value => this.updateOrientation(value));
 	}
 
 	onMouseMove(e) {
@@ -65,7 +64,7 @@ export default class HoverBar {
 
 			let styles = { top, left, width, height };
 
-			 Action.style(this.bar, styles, true);
+			 DOM.style(this.bar, styles);
 		}
 	}
 
@@ -76,12 +75,12 @@ export default class HoverBar {
 
 	enable() {
 		this.visible = true;
-		 Action.style(this.bar, {opacity: "1"}, true);
+		 DOM.style(this.bar, {opacity: "1"});
 	}
 
 	disable() {
 		this.visible = false;
-		 Action.style(this.bar, {opacity: "0"}, true);
+		 DOM.style(this.bar, {opacity: "0"});
 	}
 
 	onAppBusy(appBusy) {

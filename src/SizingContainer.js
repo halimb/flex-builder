@@ -1,7 +1,6 @@
 import { default as DOM } from "./DOMHelpers";
 import Action from "./Action";
-import AppHistory from "./AppHistory";
-import AppState from "./AppState";
+import App from "./App";
 import Handle from "./Handle";
 
 export default class SizingContainer {
@@ -15,7 +14,6 @@ export default class SizingContainer {
 		this.id = this.createContainerId();
 		this.initialSetup = initialSetup;
 		this.initContainer();
-		AppHistory.addCheckpoint();
 	}
 
 	initContainer() {
@@ -72,10 +70,11 @@ export default class SizingContainer {
 	}
 
 	validateClick(e) {
+		let appIsFree = ! App.get("busy");
 		let newPos = {x: e.pageX, y: e.pageY};
 		let oldPos = SizingContainer.clickPosStart;
-		let distance = DOM.getDistance(oldPos, newPos)
-		return (distance < 10 && ! AppState.get("busy"));
+		let distance = DOM.getDistance(oldPos, newPos);
+		return (distance < 10 && appIsFree);
 	}
 
 	setup() {
@@ -100,7 +99,7 @@ export default class SizingContainer {
 		let target = e.target;
 		let targetSize = DOM.getSize(target, appHorizontal);
 
-		let appHorizontal = AppState.get("horizontal");
+		let appHorizontal = App.get("horizontal");
 		let newOrientation = this.horizontal != appHorizontal;
 
 		if (newOrientation) {
@@ -114,6 +113,7 @@ export default class SizingContainer {
 		this.prepend = (offsetPos < targetSize / 2);
 		this.insertFlexItem(target);
 		this.attachHandle(target, rawPos);
+		// App.saveState();
 	}
 
 	createItemId() {

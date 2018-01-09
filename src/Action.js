@@ -1,58 +1,53 @@
-import AppHistory from "./AppHistory";
+import History from "./History";
+import { default as DOM } from "./DOMHelpers";
 
 export default class Action {
 
 	// Create and return an HTML node with the given params
-	static createNode({ 
-			id, 
-			content = "", 
-			cssClass = "", 
-			tag = "div" 
-		}, omit) {
-		let node = document.createElement(tag);
-		node.id = id;
-		node.innerHTML = content;
-		node.className = cssClass;
-		if (!omit) { AppHistory.register("add", node); }
-		return node;	
+	static createNode(params) {
+		let node = DOM.createNode(params);
+		// History.register("add", node);
+		return node;
 	}
 
-	static createFlexItem({ id, content = "", grow = 0, cssClass = "item"}) {
-		let item = this.createNode({id, content, cssClass});
-		item.style.flexGrow = grow;
+	static createFlexItem(params) {
+		let item = DOM.createFlexItem(params);
+		// History.register("add", item);
 		return item;
 	}
 
 	// Insert the given node next to a target node.
 	// if prepend evaluates to true, insert before the target.
 	static insertNextTo(newNode, targetNode, prepend) {
-		let parent = targetNode.parentNode;
-		let nextElement = prepend ? targetNode : targetNode.nextElementSibling;
-		parent.insertBefore(newNode, nextElement);
-		AppHistory.register("insert", {parent, newNode, nextElement});
+		DOM.insertNextTo(newNode, targetNode, prepend);
+		// History.register("insert", newNode );
 	}
 
-	static style(element, styles, omit) {
+	static style(element, styles) {
+		let currentStyle = DOM.getCurrentStyle(element, styles);
+		// History.register("restyle", {element, currentStyle});
+		DOM.style(element, styles);
+	}
 
-		for(var property in styles) {
-			element.style[property] = styles[property];
+	static saveElementPosition(element) {
+		element.oldParent = element.parentElement;
+		element.oldSiblings = {
+			next: element.nextElementSibling,
+			previous: element.previousElementSibling
 		}
-		if (omit) { return }
-		AppHistory.register("restyle", {element, styles});
 	}
+
 }
 
-Action.add = {
-	undo: element => { console.log("removing element: "); console.log(element); element.remove() },
-	redo: element => {  }     
+Action.undo = {
+	add: element => { console.log("removing element: "); console.log(element); element.remove() },
+	restyle: ({element, oldStyles}) => {console.log("undoing styles, applying style"); console.log(oldStyles); Action.style(element, oldStyles) },
+	insert: element => { Action.saveElementPosition(element) }
 }
 
-Action.insert = {
-	undo: ({element, styles}) => {},
-	redo: () => {}
-}
-
-Action.restyle = {
-	undo: () => {},
-	redo: () => {}
+Action.redo = {
+	insert: element => { 
+		let targetNode = element.oldSiblings.next;
+		Action.insertNextTo(element, targetNode); 
+	}
 }

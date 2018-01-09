@@ -108,8 +108,8 @@ button {
 	margin: 10px 10px 0 0;
 }
 
-@media screen and (max-width: 400px) {
-	.container {
+@media screen and (max-width: 500px) {
+	* {
 		flex-direction: column;
 	}
 }
