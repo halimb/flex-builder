@@ -60,11 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-<<<<<<< HEAD
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
-=======
 /******/ 	return __webpack_require__(__webpack_require__.s = 5);
->>>>>>> temp
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,19 +75,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-<<<<<<< HEAD
-var _History = _interopRequireDefault(__webpack_require__(3));
-
-var _HoverBar = _interopRequireDefault(__webpack_require__(4));
-
-var _SizingContainer = _interopRequireDefault(__webpack_require__(5));
-=======
 var _History = _interopRequireDefault(__webpack_require__(2));
 
 var _HoverBar = _interopRequireDefault(__webpack_require__(3));
 
 var _DOMHelpers = _interopRequireDefault(__webpack_require__(1));
->>>>>>> temp
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -111,18 +99,6 @@ function () {
   _createClass(App, null, [{
     key: "init",
     value: function init(container) {
-<<<<<<< HEAD
-      App.container = container;
-      App.hoverBar = new _HoverBar.default({
-        container: container,
-        thickness: 5
-      });
-      document.addEventListener("keydown", function (e) {
-        App.set("horizontal", e.key == "Control");
-      });
-      document.addEventListener("keyup", function (e) {
-        App.set("horizontal", false);
-=======
       document.addEventListener("keyup", function (e) {
         return App.onKeyUp(e);
       });
@@ -131,51 +107,31 @@ function () {
       });
       document.addEventListener("mousedown", function (e) {
         return App.onMouseDown(e);
->>>>>>> temp
       });
     }
   }, {
     key: "subscribe",
     value: function subscribe(state, onStateChange) {
-<<<<<<< HEAD
-      if (App.horizontal == undefined) {
-        App[state] = {
-=======
       console.log(state);
 
       if (App[state] === undefined) {
         App[state] = {
           value: null,
->>>>>>> temp
           callbacks: []
         };
       }
 
-<<<<<<< HEAD
-      ;
-      App[state].callbacks.push(onStateChange);
-    }
-  }, {
-    key: "set",
-    value: function set(state, value) {
-=======
       App[state].callbacks.push(onStateChange);
     }
   }, {
     key: "setValue",
     value: function setValue(state, value) {
->>>>>>> temp
       App[state].value = value;
       App.dispatch(state);
     }
   }, {
-<<<<<<< HEAD
-    key: "get",
-    value: function get(state) {
-=======
     key: "getValue",
     value: function getValue(state) {
->>>>>>> temp
       return App[state].value;
     }
   }, {
@@ -188,10 +144,6 @@ function () {
       });
     }
   }, {
-<<<<<<< HEAD
-    key: "saveState",
-    value: function saveState() {}
-=======
     key: "registerEventListener",
     value: function registerEventListener(element, eventType, handler) {
       element.addEventListener(eventType, handler);
@@ -332,75 +284,12 @@ function () {
       });
       App.listeners = listeners;
     }
->>>>>>> temp
   }]);
 
   return App;
 }();
 
 exports.default = App;
-<<<<<<< HEAD
-App.horizontal = {
-  value: false,
-  callbacks: []
-};
-App.busy = {
-  value: false,
-  callbacks: []
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-// import History from "./History";
-// import { default as DOM } from "./DOMHelpers";
-// export default class Action {
-// 	// Create and return an HTML node with the given params
-// 	static createNode(params) {
-// 		let node = DOM.createNode(params);
-// 		// History.register("add", node);
-// 		return node;
-// 	}
-// 	static createFlexItem(params) {
-// 		let item = DOM.createFlexItem(params);
-// 		// History.register("add", item);
-// 		return item;
-// 	}
-// 	// Insert the given node next to a target node.
-// 	// if prepend evaluates to true, insert before the target.
-// 	static insertNextTo(newNode, targetNode, prepend) {
-// 		DOM.insertNextTo(newNode, targetNode, prepend);
-// 		// History.register("insert", newNode );
-// 	}
-// 	static style(element, styles) {
-// 		let currentStyle = DOM.getCurrentStyle(element, styles);
-// 		// History.register("restyle", {element, currentStyle});
-// 		DOM.style(element, styles);
-// 	}
-// 	static saveElementPosition(element) {
-// 		element.oldParent = element.parentElement;
-// 		element.oldSiblings = {
-// 			next: element.nextElementSibling,
-// 			previous: element.previousElementSibling
-// 		}
-// 	}
-// }
-// DOM.undo = {
-// 	add: element => { console.log("removing element: "); console.log(element); element.remove() },
-// 	restyle: ({element, oldStyles}) => {console.log("undoing styles, applying style"); console.log(oldStyles); DOM.style(element, oldStyles) },
-// 	insert: element => { DOM.saveElementPosition(element) }
-// }
-// DOM.redo = {
-// 	insert: element => { 
-// 		let targetNode = element.oldSiblings.next;
-// 		DOM.insertNextTo(element, targetNode); 
-// 	}
-// }
-
-/***/ }),
-/* 2 */
-=======
 App.listeners = [];
 App.container = container;
 App.history = new _History.default();
@@ -419,7 +308,6 @@ App.hoverBar = new _HoverBar.default({
 
 /***/ }),
 /* 1 */
->>>>>>> temp
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -568,11 +456,7 @@ function () {
 exports.default = DOMHelpers;
 
 /***/ }),
-<<<<<<< HEAD
-/* 3 */
-=======
 /* 2 */
->>>>>>> temp
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -583,13 +467,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-<<<<<<< HEAD
-var _Action = _interopRequireDefault(__webpack_require__(1));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-=======
->>>>>>> temp
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -602,50 +479,11 @@ function () {
   function History() {
     _classCallCheck(this, History);
 
-<<<<<<< HEAD
-    this.index = 0;
-    this.actions = [];
-=======
     this.index = -1;
->>>>>>> temp
     this.checkpoints = [];
   }
 
   _createClass(History, [{
-<<<<<<< HEAD
-    key: "register",
-    value: function register(action, params) {
-      this.actions.push({
-        action: action,
-        params: params
-      });
-    }
-  }, {
-    key: "addCheckpoint",
-    value: function addCheckpoint() {
-      var checkpoint = this.actions;
-      this.checkpoints.push(checkpoint);
-      this.actions = [];
-      this.index++;
-      console.log(this.checkpoints);
-    }
-  }, {
-    key: "undo",
-    value: function undo() {
-      if (this.index == 0) {
-        return;
-      }
-
-      ;
-      var lastState = this.checkpoints[this.index - 1];
-      var len = lastState.length;
-
-      for (var i = len - 1; i >= 0; i--) {
-        var event = lastState[i];
-      }
-
-      this.index--;
-=======
     key: "addCheckpoint",
     value: function addCheckpoint(snapshot) {
       this.checkpoints.push(snapshot);
@@ -662,7 +500,6 @@ function () {
       ;
       var snapshot = this.checkpoints[this.index--];
       return snapshot;
->>>>>>> temp
     }
   }]);
 
@@ -672,11 +509,7 @@ function () {
 exports.default = History;
 
 /***/ }),
-<<<<<<< HEAD
-/* 4 */
-=======
 /* 3 */
->>>>>>> temp
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -687,11 +520,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-<<<<<<< HEAD
-var _DOMHelpers = _interopRequireDefault(__webpack_require__(2));
-=======
 var _DOMHelpers = _interopRequireDefault(__webpack_require__(1));
->>>>>>> temp
 
 var _App = _interopRequireDefault(__webpack_require__(0));
 
@@ -839,232 +668,6 @@ function () {
       if (appBusy) {
         this.disable();
       } else {
-<<<<<<< HEAD
-        this.enable();
-      }
-    }
-  }]);
-
-  return HoverBar;
-}();
-
-exports.default = HoverBar;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _DOMHelpers = _interopRequireDefault(__webpack_require__(2));
-
-var _Action = _interopRequireDefault(__webpack_require__(1));
-
-var _App = _interopRequireDefault(__webpack_require__(0));
-
-var _Handle = _interopRequireDefault(__webpack_require__(12));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var SizingContainer =
-/*#__PURE__*/
-function () {
-  function SizingContainer(_ref) {
-    var container = _ref.container,
-        _ref$horizontal = _ref.horizontal,
-        horizontal = _ref$horizontal === void 0 ? false : _ref$horizontal,
-        _ref$initialSetup = _ref.initialSetup,
-        initialSetup = _ref$initialSetup === void 0 ? null : _ref$initialSetup;
-
-    _classCallCheck(this, SizingContainer);
-
-    this.count = 0;
-    this.items = [];
-    this.handles = [];
-    this.container = container;
-    this.horizontal = horizontal;
-    this.id = this.createContainerId();
-    this.initialSetup = initialSetup;
-    this.initContainer();
-  }
-
-  _createClass(SizingContainer, [{
-    key: "initContainer",
-    value: function initContainer() {
-      var item = this.getNewItem(1);
-      this.container.innerHTML = "";
-      this.container.id = "container-".concat(this.id);
-      this.container.appendChild(item);
-      this.listen(item);
-      this.styleContainer();
-
-      if (this.initialSetup) {
-        this.setup();
-      }
-    }
-  }, {
-    key: "styleContainer",
-    value: function styleContainer() {
-      this.container.className += this.horizontal ? "--column" : "--row";
-    }
-  }, {
-    key: "getNewItem",
-    value: function getNewItem(grow) {
-      this.count++;
-      var id = this.createItemId();
-
-      var item = _DOMHelpers.default.createFlexItem({
-        id: id,
-        grow: grow,
-        content: id
-      });
-
-      this.items.push(item);
-      return item;
-    } // Insert a flex item next to the clicked position
-
-  }, {
-    key: "insertFlexItem",
-    value: function insertFlexItem(target) {
-      var item = this.getNewItem();
-      this.listen(item);
-
-      _DOMHelpers.default.insertNextTo(item, target, this.prepend);
-    } // Insert a sizing handle at the clicked position 
-
-  }, {
-    key: "attachHandle",
-    value: function attachHandle(target, initialPos) {
-      var handle = new _Handle.default({
-        target: target,
-        initialPos: initialPos,
-        prepend: this.prepend,
-        horizontal: this.horizontal
-      });
-      this.handles.push(handle);
-    }
-  }, {
-    key: "listen",
-    value: function listen(item) {
-      var _this = this;
-
-      item.addEventListener("mousedown", function (e) {
-        return _this.onMouseDown(e);
-      });
-      item.addEventListener("click", function (e) {
-        if (_this.validateClick(e)) {
-          _this.onClick(e);
-        }
-      });
-    }
-  }, {
-    key: "validateClick",
-    value: function validateClick(e) {
-      var appIsFree = !_App.default.get("busy");
-      var newPos = {
-        x: e.pageX,
-        y: e.pageY
-      };
-      var oldPos = SizingContainer.clickPosStart;
-
-      var distance = _DOMHelpers.default.getDistance(oldPos, newPos);
-
-      return distance < 10 && appIsFree;
-    }
-  }, {
-    key: "setup",
-    value: function setup() {
-      var config = this.initialSetup;
-      var target = this.items[0];
-
-      var targetSize = _DOMHelpers.default.getSize(target, this.horizontal);
-
-      this.prepend = config.offset > targetSize / 2;
-      this.insertFlexItem(target);
-      this.attachHandle(target, config.raw);
-    }
-  }, {
-    key: "onMouseDown",
-    value: function onMouseDown(e) {
-      SizingContainer.clickPosStart = {
-        x: e.pageX,
-        y: e.pageY
-      };
-    }
-  }, {
-    key: "onClick",
-    value: function onClick(e) {
-      e.stopPropagation();
-      var rawPos = {
-        x: e.pageX,
-        y: e.pageY
-      };
-      var offsetPos = appHorizontal ? e.offsetY : e.offsetX;
-      var target = e.target;
-
-      var targetSize = _DOMHelpers.default.getSize(target, appHorizontal);
-
-      var appHorizontal = _App.default.get("horizontal");
-
-      var newOrientation = this.horizontal != appHorizontal;
-
-      if (newOrientation) {
-        return new SizingContainer({
-          container: target,
-          horizontal: appHorizontal,
-          initialSetup: {
-            raw: rawPos,
-            offset: offsetPos
-          }
-        });
-      }
-
-      this.prepend = offsetPos < targetSize / 2;
-      this.insertFlexItem(target);
-      this.attachHandle(target, rawPos); // App.saveState();
-    }
-  }, {
-    key: "createItemId",
-    value: function createItemId() {
-      var itemId = this.count; // itemId = (itemId < 10) ? ("0" + itemId) : (itemId);
-
-      var containerId = this.id;
-      return "".concat(containerId).concat(itemId);
-    }
-  }, {
-    key: "removeListeners",
-    value: function removeListeners(item) {
-      item.removeEventListener(this.onClick);
-    }
-  }, {
-    key: "createContainerId",
-    value: function createContainerId() {
-      return String.fromCharCode(++SizingContainer.ID);
-    }
-  }]);
-
-  return SizingContainer;
-}();
-
-exports.default = SizingContainer;
-SizingContainer.clickPosStart;
-SizingContainer.ID = 64;
-
-/***/ }),
-/* 6 */
-=======
         this.enable();
       }
     }
@@ -1126,21 +729,11 @@ exports.default = HoverBar;
 
 /***/ }),
 /* 5 */
->>>>>>> temp
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-<<<<<<< HEAD
-var _main = _interopRequireDefault(__webpack_require__(7));
-
-var _App = _interopRequireDefault(__webpack_require__(0));
-
-var _SizingContainer = _interopRequireDefault(__webpack_require__(5));
-
-var _History = _interopRequireDefault(__webpack_require__(3));
-=======
 var _main = _interopRequireDefault(__webpack_require__(6));
 
 var _App = _interopRequireDefault(__webpack_require__(0));
@@ -1148,21 +741,12 @@ var _App = _interopRequireDefault(__webpack_require__(0));
 var _SizingContext = _interopRequireDefault(__webpack_require__(16));
 
 var _History = _interopRequireDefault(__webpack_require__(2));
->>>>>>> temp
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var container = document.getElementById("container");
 var undoButton = document.getElementById("undo");
 var redoButton = document.getElementById("redo");
-<<<<<<< HEAD
-undoButton.addEventListener("click", function (e) {
-  return _History.default.undo();
-});
-
-var init = function init(c) {
-  new _SizingContainer.default({
-=======
 
 var onBackHistoryChange = function onBackHistoryChange(backHistory) {
   undoButton.className = backHistory ? "btn-active" : "btn-inactive";
@@ -1182,36 +766,24 @@ undoButton.addEventListener("click", function (e) {
 
 var init = function init(c) {
   new _SizingContext.default({
->>>>>>> temp
     container: c
   });
 
   _App.default.init(c);
-<<<<<<< HEAD
-=======
 
   _App.default.saveState();
->>>>>>> temp
 };
 
 init(container);
 
 /***/ }),
-<<<<<<< HEAD
-/* 7 */
-=======
 /* 6 */
->>>>>>> temp
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-<<<<<<< HEAD
-var content = __webpack_require__(8);
-=======
 var content = __webpack_require__(7);
->>>>>>> temp
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1219,11 +791,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-<<<<<<< HEAD
-var update = __webpack_require__(10)(content, options);
-=======
 var update = __webpack_require__(14)(content, options);
->>>>>>> temp
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1240,36 +808,21 @@ if(false) {
 }
 
 /***/ }),
-<<<<<<< HEAD
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(9)(undefined);
-=======
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(8)(undefined);
->>>>>>> temp
 // imports
 
 
 // module
-<<<<<<< HEAD
-exports.push([module.i, "* {\n  user-select: none; }\n\nbutton {\n  border-radius: 50%;\n  width: 50px !important;\n  height: 50px !important;\n  margin: auto;\n  border: none;\n  font-family: arial;\n  font-size: 180% !important;\n  color: #555;\n  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.5);\n  outline: none !important; }\n\nbutton:hover {\n  background: #bd5; }\n\nbody {\n  background: #2196F3; }\n\n.main {\n  height: 90vh;\n  width: 80vw;\n  position: absolute;\n  top: 5vh;\n  left: 10vw; }\n\n.container {\n  display: flex;\n  align-items: stretch;\n  align-content: center;\n  box-sizing: border-box;\n  justify-content: space-around;\n  width: 100%;\n  height: 100%; }\n\n.item--row {\n  display: flex;\n  flex-flow: row; }\n\n.item--column {\n  display: flex;\n  flex-flow: column; }\n\n.item {\n  background-color: #fff;\n  display: flex;\n  cursor: crosshair;\n  align-items: center;\n  justify-content: space-around;\n  flex: 1 0 1%;\n  font-family: arial; }\n\n.handle--h {\n  background: #2196F3;\n  flex: 0 1 5px;\n  cursor: row-resize; }\n\n.handle--v {\n  background: #2196F3;\n  flex: 0 1 5px;\n  cursor: col-resize; }\n\n.hoverbar {\n  position: absolute;\n  background: rgba(0, 255, 0, 0.2);\n  pointer-events: none; }\n\n.handle:hover ~ .hoverbar {\n  visibility: hidden; }\n\n.btn-box {\n  position: fixed;\n  bottom: 20px; }\n\nbutton {\n  width: 70px;\n  height: 40px;\n  font-size: 130%;\n  margin: 10px 10px 0 0; }\n\n@media screen and (max-width: 500px) {\n  * {\n    flex-direction: column; } }\n", ""]);
-=======
 exports.push([module.i, "@font-face {\n  src: url(" + __webpack_require__(9) + ");\n  font-family: \"Nunito-Light\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(10) + ");\n  font-family: \"Nunito-Regular\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(11) + ");\n  font-family: \"Nunito-SemiBold\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(12) + ");\n  font-family: \"Nunito-Bold\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(13) + ");\n  font-family: \"Nunito-ExtraBold\"; }\n\n* {\n  user-select: none; }\n\nbutton {\n  border-radius: 50%;\n  width: 50px !important;\n  height: 50px !important;\n  margin: auto;\n  border: none;\n  background: white;\n  font-size: 180% !important;\n  color: #444;\n  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.5);\n  outline: none !important; }\n\nbutton:hover {\n  background: #bd5; }\n\nbody {\n  background: #2196F3; }\n\n.main {\n  height: 90vh;\n  width: 70vw;\n  position: absolute;\n  top: 0;\n  right: 0;\n  box-shadow: 0 0 20px 3px rgba(0, 0, 30, 0.6);\n  left: 0;\n  bottom: 0;\n  margin: auto; }\n\n.container {\n  display: flex;\n  align-items: stretch;\n  align-content: center;\n  box-sizing: border-box;\n  justify-content: space-around;\n  width: 100%;\n  height: 100%; }\n\n.item--row {\n  display: flex;\n  flex-flow: row; }\n\n.item--column {\n  display: flex;\n  flex-flow: column; }\n\n.item {\n  background-color: #fff;\n  display: flex;\n  cursor: crosshair;\n  align-items: center;\n  justify-content: space-around;\n  flex: 1 0 1%;\n  font-family: Nunito-SemiBold; }\n\n.handle--h {\n  background: #2196F3;\n  background: #9bF;\n  flex: 0 1 5px;\n  cursor: row-resize; }\n\n.handle--v {\n  background: #2196F3;\n  background: #9bF;\n  flex: 0 1 5px;\n  cursor: col-resize; }\n\n.hoverbar {\n  position: absolute;\n  background: rgba(0, 255, 0, 0.2);\n  pointer-events: none; }\n\n.handle:hover ~ .hoverbar {\n  visibility: hidden; }\n\n.controls {\n  display: flex;\n  position: fixed;\n  left: 20px; }\n\nbutton {\n  width: 70px;\n  height: 40px;\n  font-size: 130%;\n  margin: 10px 10px 0 0; }\n\n@media screen and (max-width: 500px) {\n  * {\n    flex-direction: column; } }\n", ""]);
->>>>>>> temp
 
 // exports
 
 
 /***/ }),
-<<<<<<< HEAD
-/* 9 */
-=======
 /* 8 */
->>>>>>> temp
 /***/ (function(module, exports) {
 
 /*
@@ -1351,11 +904,6 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-<<<<<<< HEAD
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-=======
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1389,7 +937,6 @@ module.exports = __webpack_require__.p + "8f56148bb7b75bdf3358914c28cb798f.ttf";
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
->>>>>>> temp
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -1443,11 +990,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-<<<<<<< HEAD
-var	fixUrls = __webpack_require__(11);
-=======
 var	fixUrls = __webpack_require__(15);
->>>>>>> temp
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1763,11 +1306,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-<<<<<<< HEAD
-/* 11 */
-=======
 /* 15 */
->>>>>>> temp
 /***/ (function(module, exports) {
 
 
@@ -1862,9 +1401,6 @@ module.exports = function (css) {
 
 
 /***/ }),
-<<<<<<< HEAD
-/* 12 */
-=======
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2044,7 +1580,6 @@ exports.default = SizingContext;
 
 /***/ }),
 /* 17 */
->>>>>>> temp
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2055,15 +1590,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-<<<<<<< HEAD
-var _DOMHelpers = _interopRequireDefault(__webpack_require__(2));
-
-var _Action = _interopRequireDefault(__webpack_require__(1));
-
-var _App = _interopRequireDefault(__webpack_require__(0));
-
-var _HoverBar = _interopRequireDefault(__webpack_require__(4));
-=======
 var _DOMHelpers = _interopRequireDefault(__webpack_require__(1));
 
 var _Action = _interopRequireDefault(__webpack_require__(4));
@@ -2071,7 +1597,6 @@ var _Action = _interopRequireDefault(__webpack_require__(4));
 var _App = _interopRequireDefault(__webpack_require__(0));
 
 var _HoverBar = _interopRequireDefault(__webpack_require__(3));
->>>>>>> temp
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2114,11 +1639,7 @@ function () {
 
       this.updateSiblings();
       this.updateSizingArea();
-<<<<<<< HEAD
-      this.listen(this.node); // App.saveState();
-=======
       this.listen(this.node);
->>>>>>> temp
     }
   }, {
     key: "updateSiblings",
@@ -2200,15 +1721,6 @@ function () {
     value: function listen(handle) {
       var _this = this;
 
-<<<<<<< HEAD
-      handle.addEventListener("mousedown", function (e) {
-        return _this.onMouseDown(e);
-      });
-      document.addEventListener("mousemove", function (e) {
-        return _this.onMouseMove(e);
-      });
-      document.addEventListener("mouseup", function (e) {
-=======
       _App.default.registerEventListener(handle, "mousedown", function (e) {
         return _this.onMouseDown(e);
       });
@@ -2218,7 +1730,6 @@ function () {
       });
 
       _App.default.registerEventListener(document, "mouseup", function (e) {
->>>>>>> temp
         return _this.onMouseUp(e);
       });
     }
@@ -2226,41 +1737,24 @@ function () {
     key: "onMouseDown",
     value: function onMouseDown(e) {
       e.stopPropagation();
-<<<<<<< HEAD
-      this.registerStyle(); // App.saveState();
-
-      _App.default.set("busy", true);
-=======
       console.log("hey! :)");
 
       _App.default.setValue("busy", true);
->>>>>>> temp
 
       this.updateSiblings();
       this.updateSizingArea();
       this.clicked = true;
-<<<<<<< HEAD
-=======
 
       _App.default.saveState();
->>>>>>> temp
     }
   }, {
     key: "onMouseUp",
     value: function onMouseUp(e) {
-<<<<<<< HEAD
-      // e.preventDefault();
-      // if (this.clicked) {
-      _App.default.set("busy", false);
-
-      this.clicked = false; // }
-=======
       if (this.clicked) {
         _App.default.setValue("busy", false);
 
         this.clicked = false;
       }
->>>>>>> temp
     }
   }, {
     key: "onMouseMove",
@@ -2274,34 +1768,11 @@ function () {
         this.resizeTo(position);
       }
     }
-<<<<<<< HEAD
-  }, {
-    key: "registerStyle",
-    value: function registerStyle() {
-      var nextItemGrow = this.nextItem.style.flex;
-      var prevItemGrow = this.prevItem.style.flex;
-      var styleNext = {
-        "flex": nextItemGrow
-      };
-      var stylePrev = {
-        "flex": prevItemGrow
-      };
-
-      _DOMHelpers.default.style(this.nextItem, styleNext);
-
-      _DOMHelpers.default.style(this.prevItem, stylePrev);
-    }
-  }], [{
-    key: "createNode",
-    value: function createNode(horizontal) {
-      var id = "handle".concat(++Handle.ID);
-=======
   }], [{
     key: "createNode",
     value: function createNode(horizontal) {
       var id = _App.default.createId('handle');
 
->>>>>>> temp
       var cssClass = horizontal ? "handle--h" : "handle--v";
 
       var node = _DOMHelpers.default.createNode({
@@ -2317,10 +1788,6 @@ function () {
 }();
 
 exports.default = Handle;
-<<<<<<< HEAD
-Handle.ID = 0;
-=======
->>>>>>> temp
 
 /***/ })
 /******/ ]);
