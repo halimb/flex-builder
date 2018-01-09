@@ -13,7 +13,7 @@ export default class DOMHelpers {
 	static getOffsetPos(item, top) {
 		let parent = item.offsetParent;
 		let offset = top ? "offsetTop" : "offsetLeft";
-		if ( parent && parent != document.body) {
+		if ( parent && parent !== document.body) {
 			return this.getOffsetPos(parent, top) + item[offset];
 		} else {
 			return item[offset];

@@ -30,14 +30,13 @@ export default class SizingContainer {
 	}
 
 	styleContainer() {
-		let className = this.horizontal ? "--column" : "--row";
-		this.container.className += className;
+		this.container.className += this.horizontal ? "--column" : "--row";
 	}
 
 	getNewItem(grow) {
 		this.count++;
 		let id = this.createItemId();
-		let item = Action.createFlexItem({ id, grow, content: id });
+		let item = DOM.createFlexItem({ id, grow, content: id });
 		this.items.push(item);
 		return item;
 	}
@@ -46,7 +45,7 @@ export default class SizingContainer {
 	insertFlexItem(target) {
 		let item = this.getNewItem();
 		this.listen(item);
-		 Action.insertNextTo(item, target, this.prepend)
+		 DOM.insertNextTo(item, target, this.prepend)
 	}
 
 	// Insert a sizing handle at the clicked position 

@@ -26,7 +26,6 @@ export default class History {
 		let len = lastState.length;
 		for (let i = len - 1; i >= 0; i--) {
 			let event = lastState[i];
-			Action.undo[event.action](event.params); 
 		}
 		this.index--;
 	}

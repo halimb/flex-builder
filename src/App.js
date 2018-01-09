@@ -4,8 +4,8 @@ import SizingContainer from "./SizingContainer";
 
 export default class App {
 
-	constructor(container) {
-		App.containers = [ new SizingContainer({ container }) ];
+	static init(container) {
+		App.container = container; 
 		App.hoverBar = new HoverBar({ container, thickness: 5 });
 		document.addEventListener("keydown", e => { App.set("horizontal", (e.key == "Control")) });
 		document.addEventListener("keyup", e => { App.set("horizontal", false) });
@@ -29,6 +29,10 @@ export default class App {
 		let stateValue = App[changedState].value; 
 		let callbacks = App[changedState].callbacks;
 		callbacks.forEach( fn => fn(stateValue) );
+	}
+
+	static saveState() {
+
 	}
 }
 

@@ -18,7 +18,7 @@ export default class Handle {
 	}
 
 	initHandle(target, prepend) {
-		Action.insertNextTo(this.node, target, prepend);
+		DOM.insertNextTo(this.node, target, prepend);
 		this.updateSiblings();
 		this.updateSizingArea();
 		this.listen(this.node);
@@ -113,14 +113,14 @@ export default class Handle {
 		let prevItemGrow = this.prevItem.style.flex;
 		let styleNext = { "flex": nextItemGrow };
 		let stylePrev = { "flex": prevItemGrow };
-		Action.style(this.nextItem, styleNext);
-		Action.style(this.prevItem, stylePrev);
+		DOM.style(this.nextItem, styleNext);
+		DOM.style(this.prevItem, stylePrev);
 	}
 
 	static createNode(horizontal) {
 		let id = `handle${++Handle.ID}`
 		let cssClass = horizontal ? "handle--h" : "handle--v";
-		let node = Action.createNode({id, cssClass});
+		let node = DOM.createNode({id, cssClass});
 		return node;
 	}
 
