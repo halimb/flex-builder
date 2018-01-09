@@ -3,15 +3,15 @@ import Action from "./Action";
 import App from "./App";
 import Handle from "./Handle";
 
-export default class SizingContainer {
+export default class SizingContext {
 	
 	constructor({ container, horizontal = false, initialSetup = null }) {
-		this.count = 0;
 		this.items = [];
 		this.handles = [];
+		this.itemCount = 0;
 		this.container = container;
 		this.horizontal = horizontal;
-		this.id = this.createContainerId();
+		this.id = App.createId("context");
 		this.initialSetup = initialSetup;
 		this.initContainer();
 	}
@@ -19,7 +19,7 @@ export default class SizingContainer {
 	initContainer() {
 		let item = this.getNewItem(1);
 		this.container.innerHTML = "";
-		this.container.id = `container-${this.id}`;
+		this.container.id = this.id;
 		this.container.appendChild(item);
 		this.listen(item);
 		this.styleContainer();
@@ -34,8 +34,8 @@ export default class SizingContainer {
 	}
 
 	getNewItem(grow) {
-		this.count++;
-		let id = this.createItemId();
+		this.itemCount++;
+		let id = this.id + this.itemCount;
 		let item = DOM.createFlexItem({ id, grow, content: id });
 		this.items.push(item);
 		return item;
@@ -45,7 +45,7 @@ export default class SizingContainer {
 	insertFlexItem(target) {
 		let item = this.getNewItem();
 		this.listen(item);
-		 DOM.insertNextTo(item, target, this.prepend)
+		DOM.insertNextTo(item, target, this.prepend)
 	}
 
 	// Insert a sizing handle at the clicked position 
@@ -60,20 +60,13 @@ export default class SizingContainer {
 	}
 
 	listen(item) {
-		item.addEventListener("mousedown", e => this.onMouseDown(e));
-		item.addEventListener("click", e => {
-			if (this.validateClick(e)) { 
+		let handler = e => {
+			if (App.validateClick(e)) {
+				console.log("blabla")
 				this.onClick(e);
 			}
-		});
-	}
-
-	validateClick(e) {
-		let appIsFree = ! App.get("busy");
-		let newPos = {x: e.pageX, y: e.pageY};
-		let oldPos = SizingContainer.clickPosStart;
-		let distance = DOM.getDistance(oldPos, newPos);
-		return (distance < 10 && appIsFree);
+		}
+		App.registerEventListener(item, "click", handler);
 	}
 
 	setup() {
@@ -85,52 +78,34 @@ export default class SizingContainer {
 		this.attachHandle(target, config.raw);
 	}
 
-	onMouseDown(e) {
-		SizingContainer.clickPosStart = {x: e.pageX, y: e.pageY};
-	}
-
 	onClick(e) {
 		e.stopPropagation();
-
 		let rawPos = {x: e.pageX, y: e.pageY};
 		let offsetPos = appHorizontal ? e.offsetY : e.offsetX;
 		
 		let target = e.target;
 		let targetSize = DOM.getSize(target, appHorizontal);
 
-		let appHorizontal = App.get("horizontal");
-		let newOrientation = this.horizontal != appHorizontal;
+		let appHorizontal = App.getValue("horizontal");
+		let newOrientation = this.horizontal !== appHorizontal;
 
 		if (newOrientation) {
-			return new SizingContainer({
+			App.saveState();
+			return new SizingContext({
 				container: target,
 				horizontal: appHorizontal,
 				initialSetup: { raw: rawPos, offset: offsetPos }
 			});
 		}
 
+		App.saveState();
 		this.prepend = (offsetPos < targetSize / 2);
 		this.insertFlexItem(target);
 		this.attachHandle(target, rawPos);
-		// App.saveState();
 	}
 
-	createItemId() {
-		let itemId = this.count;
-		// itemId = (itemId < 10) ? ("0" + itemId) : (itemId);
-		let containerId = this.id; 
-		return `${containerId}${itemId}`;
-	}
+	// removeListeners(item) {
+	// 	item.removeEventListener(this.onClick);
+	// }
 
-	removeListeners(item) {
-		item.removeEventListener(this.onClick);
-	}
-
-	createContainerId() {
-		return String.fromCharCode(++SizingContainer.ID);
-	}
 }
-
-SizingContainer.clickPosStart;
-SizingContainer.ID = 64;
-
