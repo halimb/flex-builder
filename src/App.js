@@ -11,7 +11,6 @@ export default class App {
 	}
 
 	static subscribe(state, onStateChange) {
-		console.log(state)
 		if (App[state] === undefined) { App[state] = { value: null, callbacks: [] } }
 		App[state].callbacks.push(onStateChange);
 	}
@@ -99,8 +98,8 @@ export default class App {
 		if (prevState) {
 			let { DOM, count, listeners } = prevState;
 		 	App.applyDOMSnapshot(DOM);
-		 	App.applyCount(count)
-		 	App.attachListeners(listeners);
+		 	App.applyCount(count);
+		 	window.setTimeout(()=>App.attachListeners(listeners), 500);
 		 	App.forwardHistory = true;
 		} else {
 			App.setValue("backHistory", false);
@@ -114,7 +113,6 @@ export default class App {
 	}
 
 	static applyCount(count) {
-		console.log(count);
 		App.count = count;
 	}
 
@@ -123,7 +121,10 @@ export default class App {
 			let {element, eventType, handler} = l;
 			let id = element.id;
 			element = document.getElementById(id);
-			element && element.addEventListener(eventType, handler);
+			if(element) {
+				element.addEventListener(eventType, handler) && 
+				console.log("attaching listener: "); console.log(handler); console.log("to element: "); console.log(element);
+			}
 		});
 		App.listeners = listeners;
 	}

@@ -70,6 +70,7 @@ body {
 
 .container {
 	display: flex;
+	// flew-wrap: wrap;
 	align-items: stretch;
 	align-content: center;
 	box-sizing: border-box;
@@ -141,7 +142,14 @@ button {
 }
 
 @media screen and (max-width: 500px) {
-	* {
+	.container > *{
 		flex-direction: column;
+	}
+
+	.main {
+		bottom: 15vh;
+		top: 5vh;
+		height: 80vh;
+		width: 80vw;
 	}
 }

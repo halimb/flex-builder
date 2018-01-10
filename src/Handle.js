@@ -25,6 +25,7 @@ export default class Handle {
 	}
 
 	updateSiblings(e) {
+		this.node = document.getElementById(this.node.id);
 		this.nextItem = this.node.nextSibling;
 		this.prevItem = this.node.previousSibling;
 	}
