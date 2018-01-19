@@ -9,21 +9,20 @@ let redoButton = document.getElementById("redo");
 
 let onBackHistoryChange = backHistory => {
 	undoButton.className = backHistory ? "btn-active" : "btn-inactive";
-}
+};
 
 let onForwardHistoryChange = forwardHistory => {
 	redoButton.className = forwardHistory ? "btn-active" : "btn-inactive";
-}
+};
 
-App.subscribe("backHistory", onBackHistoryChange);
-App.subscribe("forwardHistory", onForwardHistoryChange);
-
+App.subscribe("hasBackHistory", onBackHistoryChange);
+App.subscribe("hasForwardHistory", onForwardHistoryChange);
 undoButton.addEventListener("click", e => App.undo());
 
 let init = c => {
     new SizingContext({ container: c });
     App.init(c);
-    App.saveState();
+    App.saveSnapshot();
 };
 
 init(container);

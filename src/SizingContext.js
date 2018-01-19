@@ -60,13 +60,12 @@ export default class SizingContext {
 	}
 
 	listen(item) {
-		let handler = e => {
+		let callback = e => {
 			if (App.validateClick(e)) {
-				console.log("blabla")
 				this.onClick(e);
 			}
 		}
-		App.registerEventListener(item, "click", handler);
+		App.registerEventListener(item, "click", callback);
 	}
 
 	setup() {
@@ -86,11 +85,11 @@ export default class SizingContext {
 		let target = e.target;
 		let targetSize = DOM.getSize(target, appHorizontal);
 
-		let appHorizontal = App.getValue("horizontal");
+		let appHorizontal = App.getState("horizontal");
 		let newOrientation = this.horizontal !== appHorizontal;
 
 		if (newOrientation) {
-			App.saveState();
+			App.saveSnapshot();
 			return new SizingContext({
 				container: target,
 				horizontal: appHorizontal,
@@ -98,7 +97,7 @@ export default class SizingContext {
 			});
 		}
 
-		App.saveState();
+		App.saveSnapshot();
 		this.prepend = (offsetPos < targetSize / 2);
 		this.insertFlexItem(target);
 		this.attachHandle(target, rawPos);

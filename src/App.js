@@ -11,50 +11,45 @@ export default class App {
 	}
 
 	static subscribe(state, onStateChange) {
-		if (App[state] === undefined) { App[state] = { value: null, callbacks: [] } }
-		App[state].callbacks.push(onStateChange);
+		if (App.state[state] === undefined) { App.state[state] = { value: null, callbacks: [] } }
+		App.state[state].callbacks.push(onStateChange);
 	}
 
-	static setValue(state, value) {
-		App[state].value = value;
-		App.dispatch(state);
+	static setState(stateName, value) {
+		App.state[stateName].value = value;
+		App.dispatch(stateName);
 	}
 
-	static getValue(state) {
-		return App[state].value;
+	static getState(stateName) {
+		return App.state[stateName].value;
 	}
 
 	static dispatch(changedState) {
-		let stateValue = App[changedState].value; 
-		let callbacks = App[changedState].callbacks;
+		let stateValue = App.state[changedState].value;
+		let callbacks = App.state[changedState].callbacks;
 		callbacks.forEach( fn => fn(stateValue) );
 	}
 
-	static registerEventListener(element, eventType, handler) {
-		element.addEventListener(eventType, handler);
-		App.listeners.push({element, eventType, handler});
-	}
-
-	static saveState() {
+	static saveSnapshot() {
 		let clone = App.container.cloneNode(true);
-		let count = { handle: App.count.handle, context: App.count.context }
-		let snapshot = { DOM: clone, count, listeners: App.listeners};
+		let count = Object.assign({}, App.itemsCount);//{ handle: App.itemsCount.handle, context: App.itemsCount.context };
+		let snapshot = { DOM: clone, itemsCount: count, listeners: App.listeners};
 		App.history.addCheckpoint(snapshot);
-		App.setValue("backHistory", true);
+		App.setState("hasBackHistory", true);
 	}
 
 	static createId(type, params=null) {
         switch (type) {
 
 			case "context": {
-				let charCode = App.count.context++;
+				let charCode = 65 + App.itemsCount.context++;
 				return String.fromCharCode(charCode);
             }
 
             case "handle": {
-                return `handle-${++App.count.handle}`;
+                return `handle-${++App.itemsCount.handle}`;
             }
-            
+
             case "item": {
 
             }
@@ -75,18 +70,18 @@ export default class App {
 				break;
 			}
 			case "Control": {
-				App.setValue("horizontal", (e.key === "Control"));
+				App.setState("horizontal", true);
 				break
 			}
 		}
 	}
 
 	static onKeyUp(e) {
-		App.setValue("horizontal", false)
+		App.setState("horizontal", false)
 	}
 
     static validateClick(e) {
-        let appIsFree = ! App.busy.value;
+        let appIsFree = ! App.getState("busy");
         let newPos = {x: e.pageX, y: e.pageY};
         let oldPos = App.clickPosStart;
         let distance = DOM.getDistance(oldPos, newPos);
@@ -96,14 +91,15 @@ export default class App {
     static undo() {
     	let prevState = App.history.getAnteriorState();
 		if (prevState) {
-			let { DOM, count, listeners } = prevState;
+			let { DOM, itemsCount, listeners } = prevState;
 		 	App.applyDOMSnapshot(DOM);
-		 	App.applyCount(count);
+		 	App.applyCount(itemsCount);
 		 	window.setTimeout(()=>App.attachListeners(listeners), 500);
-		 	App.forwardHistory = true;
+		 	App.setState("hasForwardHistory", true);
 		} else {
-			App.setValue("backHistory", false);
+			App.setState("hasBackHistory", false);
 		}
+		console.log([App]);
     }
 
     static applyDOMSnapshot(DOMSnapshot) {
@@ -113,27 +109,34 @@ export default class App {
 	}
 
 	static applyCount(count) {
-		App.count = count;
+		App.itemsCount = count;
 	}
+
+    static registerEventListener(element, eventType, callback) {
+        element.addEventListener(eventType, callback);
+        App.listeners.push({targetId: element.id, eventType, callback});
+    }
 
 	static attachListeners(listeners) {
 		listeners.forEach( l => {
-			let {element, eventType, handler} = l;
-			let id = element.id;
-			element = document.getElementById(id);
-			if(element) {
-				element.addEventListener(eventType, handler) && 
-				console.log("attaching listener: "); console.log(handler); console.log("to element: "); console.log(element);
+			let {targetId, eventType, callback} = l;
+			let target = document.getElementById(targetId);
+			if(target) {
+				target.addEventListener(eventType, callback);
 			}
 		});
 		App.listeners = listeners;
 	}
 }
 
-
+App.state = {
+    horizontal: { value: null, callbacks: [] },
+    hasBackHistory: { value: null, callbacks: [] },
+    hasForwardHistory: { value: null, callbacks: [] }
+};
 App.listeners = [];
 App.container = container;
 App.history = new History();
 App.clickPosStart = {x: 0, y: 0};
-App.count = { handle: 0, context: 65 };
+App.itemsCount = { handle: 0, context: 0 };
 App.hoverBar = new HoverBar({ container: container.parentElement, thickness: 5 });

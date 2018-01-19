@@ -8,7 +8,7 @@ export default class Handle {
 	constructor( { target, initialPos = {x: NaN, y: NaN}, prepend, horizontal } ) {
 		this.horizontal = horizontal;
 		this.node = Handle.createNode(horizontal);
-		this.initHandle(target, prepend);
+		this.attachTo(target, prepend);
 		let position = this.processPosition({
 			x: initialPos.x, 
 			y: initialPos.y
@@ -17,7 +17,7 @@ export default class Handle {
 		this.clicked = false;
 	}
 
-	initHandle(target, prepend) {
+	attachTo(target, prepend) {
 		DOM.insertNextTo(this.node, target, prepend);
 		this.updateSiblings();
 		this.updateSizingArea();
@@ -35,10 +35,10 @@ export default class Handle {
 	}
 
 	processPosition({x, y}) {
-		var pagePos = this.horizontal ? y : x;
+		let pagePos = this.horizontal ? y : x;
 		let start = this.contextStart;
 		let end = this.contextEnd;
-		var pos = pagePos - start;
+		let pos = pagePos - start;
 		if (pos > end) { pos = end }
 		else if (pos < 0) { pos = 0 }
 		return pos;
@@ -75,34 +75,33 @@ export default class Handle {
 
 	listen(handle) {
 		App.registerEventListener(handle , "mousedown", e => this.onMouseDown(e));
-		App.registerEventListener(document, "mousemove", e => this.onMouseMove(e));
-		App.registerEventListener(document, "mouseup", e => this.onMouseUp(e));
+		document.addEventListener("mousemove", e => this.onMouseMove(e));
+		document.addEventListener("mouseup", e => this.onMouseUp(e));
 	}
 
 	onMouseDown(e) {
 		e.stopPropagation();
-		console.log("hey! :)")
-		App.setValue("busy", true);
-		this.updateSiblings();
-		this.updateSizingArea();
-		this.clicked = true;
-		App.saveState();
-	}
+		App.setState("busy", true);
+        this.updateSiblings();
+        this.updateSizingArea();
+        this.clicked = true;
+        App.saveSnapshot();
+    }
 
 	onMouseUp(e) {
 		if(this.clicked) {
-			App.setValue("busy", false);
+			App.setState("busy", false);
 			this.clicked = false;
 		}
 	}
 
 	onMouseMove(e) {
-		if (this.clicked) {
+        if (this.clicked) {
 			e.stopPropagation();
 			let position = this.processPosition({
 				x: e.pageX,
 				y: e.pageY
-			})
+			});
 			this.resizeTo(position);
 		}
 	}

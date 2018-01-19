@@ -11,11 +11,10 @@ export default class History {
 	}
 
 	getAnteriorState() {
-		if (this.index == 0) { 
+		if (this.index === 0) {
 			console.log("App history reached the initial state."); 
 			return false
-		};
-		let snapshot = this.checkpoints[this.index--];
-		return snapshot;
+		}
+		return this.checkpoints[this.index--];
 	}
 }

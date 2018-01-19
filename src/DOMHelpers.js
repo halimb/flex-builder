@@ -70,7 +70,7 @@ export default class DOMHelpers {
 	}
 	
 	static style(element, styles) {
-		for(var property in styles) {
+		for(let property in styles) {
 			element.style[property] = styles[property];
 		}
 	}
